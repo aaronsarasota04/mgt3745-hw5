@@ -2,16 +2,18 @@
 
 ## Kano-Classified Feature List
 
-**Classification date:** 09/10/2026
+**Classification date:** 09/28/2026. Kano classes below are hypotheses, not validated Kano results. Interview dates are listed with the supporting evidence and in [USERS.md](USERS.md).
 
-| # | Feature | Kano class | Reason from research |
-|---|---------|-----------|----------------------|
-| 1 | Job is tech oriented | Must-be | The main need is a software/data engineering role, not a non-technical job. |
-| 2 | Job requirements | Performance | Closer alignment between requirements and skills increases value; job descriptions are often preferred profiles, not strict checklists. |
-| 3 | Recruiter/Hiring Manager information | Attractive | Helpful for outreach and visibility, but not required to evaluate a role. |
-| 4 | Learning all technologies for a single job requirement | Indifferent | Candidates do not need to match every listed technology; partial fit can still be relevant. |
-| 5 | Job offer | Must-be | Getting interviews and offers is the core purpose of the feature. |
-| 6 | Salary | Performance | Better compensation makes a role more attractive, but the opportunity may still be worth pursuing if the fit is strong. |
+| # | Tool feature | Kano class (hypothesis) | Relevant user segment | Interview date | Supporting interview evidence |
+|---|--------------|------------------------|-----------------------|----------------|------------------------------|
+| 1 | Enter the applicant's skills and project evidence | Must-be (inferred) | PROFILE-01 and PROFILE-02 | INT-01: Saturday, September 5, 2026; INT-02: Friday, September 25, 2026 | INT-01 reported relying on personal projects and relevant experience; INT-02 reported having demonstrated internship work. Neither interview directly evaluated this input feature. |
+| 2 | Enter the skills required by a job | Must-be (inferred) | PROFILE-01 and PROFILE-02 | INT-01: Saturday, September 5, 2026; INT-02: Friday, September 25, 2026 | INT-01 described applying for a specific software engineering role; INT-02 described a team-specific conversion decision. Comparing explicit role requirements is an inferred product need, not a feature either participant directly requested. |
+| 3 | Calculate a percentage match between the two skill lists | Performance (inferred) | PROFILE-01 and PROFILE-02 | INT-01: Saturday, September 5, 2026; INT-02: Friday, September 25, 2026 | INT-01's application and offer involved different role levels, and INT-02's conversion involved demonstrated work and available headcount. These accounts motivate structured comparison but do not validate a numeric score. |
+| 4 | Show matched and missing skills separately | Performance (inferred) | PROFILE-01 and PROFILE-02 | INT-01: Saturday, September 5, 2026; INT-02: Friday, September 25, 2026 | INT-01 reported projects and experience as evidence; INT-02 reported internship performance as evidence. Breaking evidence into matched and missing skills is an inferred way to make that comparison inspectable. |
+| 5 | Summarize fit based on the match result | Attractive (inferred) | PROFILE-01, especially applicants without internships | INT-01: Saturday, September 5, 2026 | INT-01 reported receiving an offer at a different level than the role initially targeted. This supports exploring decision guidance, but does not show that a threshold summary would have changed his decision. |
+| 6 | Save and restore submitted entries through the Worker and D1 | Unclassified (not assessed) | PROFILE-01 and PROFILE-02 | INT-01: Saturday, September 5, 2026; INT-02: Friday, September 25, 2026 | Neither INT-01 nor INT-02 discussed saving or restoring tool input. There is no interview evidence to assign a Kano class to persistence. |
+
+Interview dates are supplied for context; the table records whether each interview provided direct evidence for a feature. Kano classifications remain provisional because no feature-by-feature Kano questions were asked.
 
 ---
 
@@ -23,7 +25,7 @@ The primary user is a senior Computer Science student at Georgia Tech pursuing s
 
 ## 2. Users
 
-This feature is designed for early-career technical job seekers navigating competitive hiring pipelines. It reflects the experiences of a candidate who relied on projects and networking instead of internship experience, and a recruiter who evaluates candidates based on potential and fit rather than strict checklist compliance.
+This feature is designed for two early-career technical applicant segments: applicants without internship experience who rely on projects and other evidence, and applicants with internship experience seeking full-time conversion. The interviews suggest that hiring outcomes can reflect both candidate evidence and circumstances such as team headcount; two interviews do not establish how common these experiences are.
 
 ---
 

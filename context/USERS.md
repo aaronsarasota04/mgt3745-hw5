@@ -1,41 +1,59 @@
-# USERS.md
+## Interview synthesis
 
-**Name: Aaron Rahim**
-**Date: 09-09-2026**
-**Assignment:** HW2, MGT 3745 O
+Use of participant codes protects identities. These were approximately 15-minute exploratory interviews. Raw notes are not included.
 
-## Interview Synthesis
+### INT-01
 
-### Interview 1
-**Who: Cousin (Software Engineer)**
-**Situation I asked about: Their experience applying for full-time software engineering roles, including their application strategy and factors that contributed to receiving an offer.**
-**What Surprised me: He initially applied for a Software Engineer I position but was ultimately offered a Software Engineer II position because of a previous relationship with the recruiter. This was especially surprising because he had no previous internship experience; however, he had a couple of strong personal projects. He also emphasized that GPA was less important in his experience than projects and relevant work experience. Additionally, the salary was lower than the average rate for a similar grad, but it helped him as a stepping stone into the market for better opportunities **
+Participant code: INT-01
 
-### Interview 2
-**Who: Tech Recruiter**
-**Situation I asked about: How recruiters evaluate candidates when deciding who should move forward in the hiring process and what they specifically look for in candidates.**
-**What surprised me:  Networking with alumni from your university working as software/data engineers, especially people maybe 1–3 years ahead of you can help tremendously . Job descriptions are usually describing the employer’s preferred candidate, not necessarily giving you a checklist where missing one requirement automatically disqualifies you. Not all jobs are posted on LinkedIn, so it is important to search company career pages, university careers services, alumni, recruiters where relevant, smaller companies and direct conversations alongside the major job boards.
+Relevant circumstance: Early-career software engineer, cousin of the interviewer, who had no internship experience and was applying for full-time software engineering roles.
 
----
+Date: Saturday, September 5, 2026.
 
-## Job Statements
+Duration: Approximately 15 minutes.
 
-**Job 1: When I **search for a tech position**, I want to **determine whether I should apply even if I do not meet all of the listed requirements**, so I can **increase my chances of getting hired without assuming I have to be the employer's ideal candidate**.
+What happened and the participant's workaround:
+- **Reported:** He applied for a Software Engineer I position and received an offer for a Software Engineer II position. He attributed the outcome to a prior relationship with the recruiter. He said GPA mattered less in his experience than projects and relevant work experience. He also reported that the salary was below the average for a comparable new graduate, but viewed the role as a way into the market.
+- **Workaround:** He used personal projects and relevant experience to demonstrate his qualifications.
 
-**Job 2:** When I **search for a tech position**, I want to **find job opportunities through multiple sources beyond major job boards**, so I can **discover positions that I might otherwise miss**.
+What was reported, what you observed, and what you infer:
+- **Reported:** The account above is a retrospective summary of his experience.
+- **Observed:** The reported outcome differed from the title he initially applied for; no application records or other independent hiring evidence were reviewed.
+- **Inferred:** Personal projects and a recruiter relationship may help an applicant without internship experience, but this single account does not establish which factor caused the offer or how broadly this applies.
 
----
+Evidence that confirms, challenges, or leaves the framing uncertain: The account confirms that this participant pursued and received an offer for a role with a different level than the one he initially targeted. It challenges treating job titles or GPA as the only useful application signals. The respective influence of projects, prior recruiter relationship, and other qualifications remains uncertain.
 
-## User Profiles
+### INT-02
 
-### Profile A
-- **Situation: [known] The interviewee was applying for full-time software engineering positions. He initially applied for a Software Engineer I position and ultimately received an offer for a Software Engineer II position because of a previous relationship with the recruiter.**
-- **Job they are hiring for: [known] Determine which software engineering opportunities to pursue and how to present his qualifications when applying for positions**
-- **What they do today instead [known] He relied on personal projects and his existing experience when applying for positions. He also learned through his experience that GPA was less important than projects and relevant work experience.**
-- **Why today's approach is unsatisfying: He did not have previous internship experience, which meant he had less traditional work experience to demonstrate to employers during the job search. The salary was also lower than the average for a comparable new grad role, which made the offer less competitive even though it helped him enter the market.**
+Participant code: INT-02
 
-### Profile B
-- **Situation: [known] The interviewee was evaluating candidates as a tech recruiter and deciding which candidates should move forward in the hiring process.**
-- **Job they are hiring for: [known] Identify candidates who should advance to the next stage of the hiring process.**
-- **What they do today instead [assumed] The recruiter evaluates candidates based on their qualifications and considers job descriptions as descriptions of the employer's preferred candidate rather than as a strict checklist.**
-- **Why today's approach is unsatisfying [known] The recruiter indicated that candidates may incorrectly treat job descriptions as strict checklists and eliminate themselves from consideration even when they may still be qualified.**
+Relevant circumstance: Recent graduate with internship experience whose team considered full-time conversion.
+
+Date: Friday, September 25, 2026.
+
+Duration: Approximately 15 minutes.
+
+What happened and the participant's workaround:
+- **Reported:** He performed very well during his internship and received a full-time offer by his graduation date since headcount was available on the team. He was one of only two interns selected for full-time conversion (out of around five reported by him).
+- **Workaround:** No separate workaround was reported; the internship was the relevant experience in this hiring decision.
+
+What was reported, what you observed, and what you infer:
+- **Reported:** The participant described strong internship performance, available team headcount, and receiving a full-time offer; he said only two interns were selected for conversion.
+- **Observed:** The account identifies both performance and headcount as circumstances around the decision; no offer, performance review, or hiring record was independently reviewed.
+- **Inferred:** The internship provided an opportunity to demonstrate work, but the available account does not establish which evidence the team relied on. Team capacity may constrain conversion; strong performance alone is not shown to guarantee an offer.
+
+Evidence that confirms, challenges, or leaves the framing uncertain: The account supports considering demonstrated work and team hiring capacity when thinking about conversion. It leaves uncertain how the team evaluated performance, how many interns were considered, and whether the same decision would have been made without available headcount.
+
+## Two job statements
+
+JOB-01: When I am considering an early-career technical role whose listed requirements do not exactly match my experience, I want to compare its requirements with evidence from my skills and projects, so I can decide whether applying is worthwhile without ruling myself out based only on a mismatch. Evidence: INT-01 (reported application for Software Engineer I, offer for Software Engineer II, and use of personal projects; causal factors remain uncertain).
+
+JOB-02: When I have completed an internship and am seeking a full-time role, I want to understand how demonstrated performance and team capacity affect a conversion decision, so I can make realistic next steps based on my work and the team's hiring needs. Evidence: INT-02 (reported strong performance, available headcount, and selection of only two interns for conversion).
+
+## Two user profiles
+
+PROFILE-01: Early-career technical applicant without internship experience; has personal projects and may have a recruiter relationship; needs to judge role fit and present relevant evidence despite limited formal work experience; salary and entry into the field are constraints. Evidence: INT-01.
+
+PROFILE-02: Applicant with internship experience seeking full-time conversion or a comparable role; can draw on demonstrated internship work, but conversion depends in part on team headcount and a limited number of selections. Evidence: INT-02.
+
+These two exploratory interviews inform hypotheses, not population prevalence.
