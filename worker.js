@@ -11,10 +11,9 @@
 //   status 400  the EARS "unwanted behavior" row, executable
 //   CORS        headers that tell the browser your page is allowed to call this Worker
 
-// Session B uses "*" so everyone's page works on the first try.
-// HW4 Craft credit: replace "*" with your page's origin once it is deployed.
+// Allow requests from the Codespaces Live Server page.
 const CORS = {
-  "access-control-allow-origin": "*",
+  "access-control-allow-origin": "https://aaronsarasota04.github.io",
   "access-control-allow-methods": "GET, POST, OPTIONS",
   "access-control-allow-headers": "content-type",
 };
@@ -66,8 +65,21 @@ async function handle(request, env) {
     if (!body.text) {
       return new Response("text required", { status: 400, headers: CORS });
     }
-    // HW4 Part 3: add one more validation rule here that traces to an
-    // EARS unwanted-behavior statement in your FEATURES.md.
+    let parsedEntry = null;
+    try {
+      parsedEntry = JSON.parse(body.text);
+    } catch {
+      parsedEntry = null;
+    }
+
+    const fieldTooLong = parsedEntry && typeof parsedEntry === "object"
+      ? [parsedEntry.userSkills, parsedEntry.jobText]
+        .some(value => typeof value === "string" && value.length > 2000)
+      : typeof body.text === "string" && body.text.length > 2000;
+
+    if (fieldTooLong) {
+      return new Response("text entry is too long", { status: 400, headers: CORS });
+    }
     await env.DB.prepare("INSERT INTO entries (text) VALUES (?)")
       .bind(body.text).run();
     return new Response(null, { status: 201, headers: CORS });
