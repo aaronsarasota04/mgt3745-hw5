@@ -37,5 +37,78 @@ test("EARS: WHEN a valid entry is submitted, THE SYSTEM SHALL store it (POST the
   assert.ok(list.some(e => e.text === marker), "posted entry appears in GET");
 });
 
-// TODO (HW5 Part 5): one test for your delegated feature's endpoint or its
-// effect on GET /entries. Name the EARS row in the title.
+test("EARS: IF the skillset is empty, THEN THE SYSTEM SHALL display a validation message and SHALL NOT send a Gemini API request.", async () => {
+  const missing = await fetch(API + "/job-suggestions", {
+    method: "POST",
+    headers: { "content-type": "application/json" },
+    body: JSON.stringify({ jobText: "Python, SQL" }),
+  });
+  assert.equal(missing.status, 400);
+  assert.match(await missing.text(), /userSkills required/i, "missing skillset is rejected");
+
+  const blank = await fetch(API + "/job-suggestions", {
+    method: "POST",
+    headers: { "content-type": "application/json" },
+    body: JSON.stringify({ userSkills: "   ", jobText: "Python, SQL" }),
+  });
+  assert.equal(blank.status, 400);
+  assert.match(await blank.text(), /userSkills required/i, "blank skillset is rejected");
+});
+
+/*test("EARS: IF the Gemini API is unavailable, rejects the request, or returns unusable suggestions, THEN THE SYSTEM SHALL explain that suggestions could not be generated and preserve the user's entered skills and job requirements.", async () => {
+  const res = await fetch(API + "/job-suggestions", {
+    method: "POST",
+    headers: { "content-type": "application/json" },
+    body: JSON.stringify({ userSkills: "Python, SQL", jobText: "Python, SQL, ETL" }),
+  });
+  assert.ok([429, 502].includes(res.status), "Gemini outage path is surfaced as an error");
+  const text = await res.text();
+  assert.match(text, /Gemini|quota|unavailable|could not|error/i, "error explains the suggestion failure");
+});*/
+
+test("EARS: IF the Gemini API is unavailable, rejects the request, or returns unusable suggestions, THEN THE SYSTEM SHALL explain that suggestions could not be generated and preserve the user's entered skills and job requirements.", async () => {
+  const userSkills = "Python, SQL";
+  const jobText = "Python, SQL, ETL";
+
+  const res = await fetch(API + "/job-suggestions", {
+    method: "POST",
+    headers: { "content-type": "application/json" },
+    body: JSON.stringify({ userSkills, jobText }),
+  });
+
+  assert.ok(
+    [429, 502].includes(res.status),
+    "Gemini outage path is surfaced as an error"
+  );
+
+  const text = await res.text();
+
+  assert.match(
+    text,
+    /Gemini|quota|unavailable|could not|error/i,
+    "error explains the suggestion failure"
+  );
+
+  // Verify the user's entered information was preserved in /entries.
+  const entriesRes = await fetch(API + "/entries");
+  assert.equal(entriesRes.status, 200);
+
+  const entries = await entriesRes.json();
+
+  const saved = entries.find((entry) => {
+    try {
+      const data = JSON.parse(entry.text);
+      return (
+        data.userSkills === userSkills &&
+        data.jobText === jobText
+      );
+    } catch {
+      return false;
+    }
+  });
+
+  assert.ok(
+    saved,
+    "user's entered skills and job requirements are preserved"
+  );
+});
