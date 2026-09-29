@@ -328,6 +328,75 @@ textarea:focus-visible {
 
 .results-footnote { margin: 2rem 0 0; color: #a8d8cd; }
 
+/* Style the job-suggestion discovery section as a quiet complement to the main result. */
+.suggestions {
+  margin-top: 3.5rem;
+  padding: 2.5rem;
+  background: var(--surface);
+  border: 1px solid var(--line);
+}
+
+.suggestions .section-heading {
+  grid-template-columns: 0.7fr 1fr 1fr;
+}
+
+/* Lay suggestion cards out in a responsive grid that matches the input panel rhythm. */
+.suggestion-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+  margin-top: 1.5rem;
+}
+
+/* Give each suggested role its own panel with clear hierarchy. */
+.suggestion-card {
+  padding: 1.5rem;
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-top: 4px solid var(--teal);
+}
+
+.suggestion-card h3 {
+  margin-bottom: 0.75rem;
+  font-size: 1.15rem;
+  color: var(--ink);
+}
+
+.suggestion-explanation {
+  margin: 0 0 1rem;
+  color: var(--muted);
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
+
+.suggestion-skills-label {
+  margin: 0 0 0.4rem;
+  color: var(--teal-dark);
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.suggestion-skills {
+  margin: 0;
+  padding-left: 1.1rem;
+  line-height: 1.6;
+  color: var(--ink);
+  font-size: 0.85rem;
+}
+
+/* Collapse the suggestion grid to a single column on narrow screens. */
+@media (max-width: 600px) {
+  .suggestion-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .suggestions {
+    padding: 1.25rem;
+  }
+}
+
 /* Collapse the comparison into a single readable column on narrow screens. */
 @media (max-width: 600px) {
   .page-shell {

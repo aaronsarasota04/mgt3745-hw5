@@ -13,6 +13,9 @@
   const matchSummary = document.querySelector('#match-summary');
   const matchedList = document.querySelector('#matched-list');
   const missingList = document.querySelector('#missing-list');
+  const suggestButton = document.querySelector('#suggest-button');
+  const suggestStatus = document.querySelector('#suggest-status');
+  const suggestionsList = document.querySelector('#suggestions-list');
 
   // Map common user-entered terms to stable labels used by the comparison result.
   const skillCatalog = [
@@ -253,6 +256,103 @@
     return true;
   }
 
+  // Request job-role suggestions from the Worker, which calls the Gemini API server-side so the API key never reaches the browser.
+  async function fetchJobSuggestions(userSkills) {
+    const res = await fetch(API + '/job-suggestions', {
+      method: 'POST',
+      headers: { 'content-type': 'application/json' },
+      body: JSON.stringify({ userSkills, jobText: jobInput.value })
+    });
+
+    if (!res.ok) {
+      const reason = await res.text().catch(() => '');
+      return { ok: false, status: res.status, reason };
+    }
+
+    const data = await res.json();
+    return { ok: true, suggestions: data.suggestions };
+  }
+
+  // Render each suggestion as a card with the role name, explanation, and skills to build next.
+  function renderSuggestions(suggestions) {
+    suggestionsList.replaceChildren();
+
+    suggestions.forEach(item => {
+      const card = document.createElement('article');
+      card.className = 'suggestion-card';
+
+      const roleHeading = document.createElement('h3');
+      roleHeading.textContent = item.role;
+      card.append(roleHeading);
+
+      const explanation = document.createElement('p');
+      explanation.className = 'suggestion-explanation';
+      explanation.textContent = item.explanation;
+      card.append(explanation);
+
+      if (Array.isArray(item.relevantSkillsToBuild) && item.relevantSkillsToBuild.length > 0) {
+        const skillsLabel = document.createElement('p');
+        skillsLabel.className = 'suggestion-skills-label';
+        skillsLabel.textContent = 'Skills to build';
+        card.append(skillsLabel);
+
+        const skillsList = document.createElement('ul');
+        skillsList.className = 'suggestion-skills';
+        item.relevantSkillsToBuild.forEach(skill => {
+          const li = document.createElement('li');
+          li.textContent = skill;
+          skillsList.append(li);
+        });
+        card.append(skillsList);
+      }
+
+      suggestionsList.append(card);
+    });
+
+    suggestionsList.hidden = false;
+  }
+
+  // Validate the skillset, call the Worker, and display suggestions or an error without clearing entered values.
+  async function showSuggestions() {
+    const userSkills = userSkillsInput.value.trim();
+
+    if (!userSkills) {
+      suggestStatus.className = 'status-text validation-message';
+      suggestStatus.textContent = 'Enter at least one skill above before requesting suggestions.';
+      suggestionsList.hidden = true;
+      return;
+    }
+
+    suggestStatus.className = 'status-text';
+    suggestStatus.textContent = 'Finding similar roles…';
+    suggestButton.disabled = true;
+
+    let result;
+    try {
+      result = await fetchJobSuggestions(userSkills);
+    } catch {
+      suggestStatus.textContent = 'Could not reach the server. Your skills and job requirements are still here.';
+      suggestButton.disabled = false;
+      return;
+    }
+
+    suggestButton.disabled = false;
+
+    if (!result.ok) {
+      suggestionsList.hidden = true;
+      if (result.status === 400) {
+        suggestStatus.className = 'status-text validation-message';
+        suggestStatus.textContent = 'Enter at least one skill above before requesting suggestions.';
+      } else {
+        suggestStatus.textContent = 'Suggestions could not be generated right now. Your skills and job requirements are still here.';
+      }
+      return;
+    }
+
+    renderSuggestions(result.suggestions);
+    suggestStatus.textContent = 'Suggestions ready. Explore these roles as starting points for further research.';
+  }
+
   // Restore the draft before wiring the click action so a failed storage write never clears typed input.
   const savedState = await loadState();
   userSkillsInput.value = savedState.userSkills;
@@ -267,5 +367,7 @@
     }
     statusMessage.textContent = 'Comparison saved.';
   });
+
+  suggestButton.addEventListener('click', showSuggestions);
 })();
 

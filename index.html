@@ -7,6 +7,9 @@
   <!-- Keep presentation and behavior separate so each layer remains easy to maintain. -->
   <link rel="stylesheet" href="styles.css">
   <script src="app.js" defer></script>
+  <meta property="og:image" content="https://bolt.new/static/og_default.png">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content="https://bolt.new/static/og_default.png">
 </head>
 <body>
   <main class="page-shell">
@@ -92,6 +95,24 @@
         </div>
       </div>
       <p class="results-footnote">This is a suggestion based on the text you entered, not a prediction of an interview or offer.</p>
+    </section>
+
+    <!-- Let the user request AI-generated job-role suggestions based on the skills they entered. -->
+    <section class="suggestions" aria-labelledby="suggestions-title">
+      <div class="section-heading">
+        <p class="section-kicker">Discover more</p>
+        <h2 id="suggestions-title">Similar roles to consider.</h2>
+        <p class="instruction">Uses the skills you entered above to suggest related job roles worth exploring.</p>
+      </div>
+
+      <div class="action-row">
+        <p class="action-note">Suggestions are ideas for further research, not verified openings.</p>
+        <button id="suggest-button" type="button"><span>Suggest similar roles</span><span aria-hidden="true">→</span></button>
+      </div>
+      <p id="suggest-status" class="status-text" role="status" aria-live="polite"></p>
+
+      <!-- Render each returned role as a card with its explanation and skills to build. -->
+      <div id="suggestions-list" class="suggestion-grid" hidden></div>
     </section>
   </main>
 </body>
