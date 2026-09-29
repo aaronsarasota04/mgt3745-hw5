@@ -18,6 +18,7 @@ const CORS = {
   "access-control-allow-headers": "content-type",
 };
 
+      console.error("Gemini API fetch failed before receiving a response");
 export default {
   async fetch(request, env) {
     // Anything that throws below becomes a readable 500 instead of a bare
@@ -144,6 +145,7 @@ async function handle(request, env) {
       const generatedText = responseBody.candidates?.[0]?.content?.parts?.[0]?.text;
       suggestions = JSON.parse(generatedText).suggestions;
     } catch {
+      console.error("Gemini response JSON could not be parsed");
       return new Response("Gemini returned unusable suggestions", { status: 502, headers: CORS });
     }
 
@@ -153,6 +155,7 @@ async function handle(request, env) {
         && Array.isArray(item.relevantSkillsToBuild)
         && item.relevantSkillsToBuild.every(skill => typeof skill === "string"));
     if (!validSuggestions) {
+      console.error("Gemini suggestions did not match the expected structure");
       return new Response("Gemini returned unusable suggestions", { status: 502, headers: CORS });
     }
 
