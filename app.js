@@ -344,7 +344,10 @@
         suggestStatus.className = 'status-text validation-message';
         suggestStatus.textContent = 'Enter at least one skill above before requesting suggestions.';
       } else {
-        suggestStatus.textContent = 'Suggestions could not be generated right now. Your skills and job requirements are still here.';
+        const reason = result.reason.trim();
+        suggestStatus.textContent = reason
+          ? `Suggestions failed: ${reason}${reason.endsWith('.') ? '' : '.'} Your skills and job requirements are still here.`
+          : 'Suggestions could not be generated right now. Your skills and job requirements are still here.';
       }
       return;
     }

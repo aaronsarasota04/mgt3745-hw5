@@ -33,7 +33,10 @@ async function loadApp(storage = {}) {
     'match-score',
     'match-summary',
     'matched-list',
-    'missing-list'
+    'missing-list',
+    'suggest-button',
+    'suggest-status',
+    'suggestions-list'
   ];
 
   for (const id of ids) {
@@ -65,10 +68,16 @@ async function loadApp(storage = {}) {
         }
       }
     },
-    fetch: async () => ({
-      ok: true,
-      json: async () => []
-    }),
+    fetch: async url => url.endsWith('/job-suggestions')
+      ? {
+          ok: false,
+          status: 502,
+          text: async () => 'Gemini API error (503): This model is currently experiencing high demand.'
+        }
+      : {
+          ok: true,
+          json: async () => []
+        },
     document,
     console
   };
@@ -82,6 +91,9 @@ async function loadApp(storage = {}) {
     storage,
     async clickEvaluate() {
       await elements['evaluate-button'].click();
+    },
+    async clickSuggest() {
+      await elements['suggest-button'].click();
     }
   };
 }
@@ -202,4 +214,17 @@ test('EARS 8: saved skill lists survive a page reload after comparison', async (
   assert.equal(reloadedPage.elements['skills-input'].value, 'Python, Java, Go, Rust');
   assert.equal(reloadedPage.elements['job-input'].value, 'Python, Go, Databricks');
   console.log('EARS 8 passed');
+});
+
+test('suggestion errors show the sanitized Gemini reason', async () => {
+  const { elements, clickSuggest } = await loadApp();
+
+  elements['skills-input'].value = 'Python, SQL';
+  await clickSuggest();
+
+  assert.equal(
+    elements['suggest-status'].textContent,
+    'Suggestions failed: Gemini API error (503): This model is currently experiencing high demand. Your skills and job requirements are still here.'
+  );
+  assert.equal(elements['suggest-button'].disabled, false);
 });

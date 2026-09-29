@@ -136,7 +136,7 @@ async function handle(request, env) {
         // Keep the upstream status useful even when its error body is not JSON.
       }
       console.error("Gemini API request failed", { status: geminiResponse.status, detail: errorDetail });
-      return new Response("job suggestions are temporarily unavailable", { status: 502, headers: CORS });
+      return new Response(`Gemini API error (${geminiResponse.status}): ${errorDetail}`, { status: 502, headers: CORS });
     }
 
     let suggestions;
