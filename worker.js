@@ -68,7 +68,7 @@ async function handle(request, env) {
     if (userSkills.length > 2000 || jobText.length > 2000) {
       return new Response("skill input is too long", { status: 400, headers: CORS });
     }
-    if (!env.GEMINI_API_KEY) {
+    if (!env.GEMINI_API) {
       return new Response("job suggestions are not configured", { status: 503, headers: CORS });
     }
 
@@ -80,7 +80,7 @@ async function handle(request, env) {
           method: "POST",
           headers: {
             "content-type": "application/json",
-            "x-goog-api-key": env.GEMINI_API_KEY,
+            "x-goog-api-key": env.GEMINI_API,
           },
           body: JSON.stringify({
             contents: [{
