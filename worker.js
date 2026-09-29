@@ -75,7 +75,7 @@ async function handle(request, env) {
     let geminiResponse;
     try {
       geminiResponse = await fetch(
-        "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent",
+        "https://generativelanguage.googleapis.com/v1beta/models/gemini-3.8-flash:generateContent",
         {
           method: "POST",
           headers: {
@@ -119,6 +119,22 @@ async function handle(request, env) {
     }
 
     if (!geminiResponse.ok) {
+      let errorDetail = "unknown";
+      try {
+        const errorBody = await geminiResponse.json();
+        const message = errorBody?.error?.message;
+        if (typeof message === "string") {
+          errorDetail = message
+            .replaceAll(env.GEMINI_API, "[redacted]")
+            .replaceAll(userSkills, "[user input]");
+          if (jobText) {
+            errorDetail = errorDetail.replaceAll(jobText, "[user input]");
+          }
+        }
+      } catch {
+        // Keep the upstream status useful even when its error body is not JSON.
+      }
+      console.error("Gemini API request failed", { status: geminiResponse.status, detail: errorDetail });
       return new Response("job suggestions are temporarily unavailable", { status: 502, headers: CORS });
     }
 
