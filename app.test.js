@@ -21,7 +21,7 @@ function makeElement() {
   };
 }
 
-async function loadApp(storage = {}) {
+async function loadApp(storage = {}, suggestionFetch = null) {
   const elements = {};
   const ids = [
     'skills-input',
@@ -69,7 +69,9 @@ async function loadApp(storage = {}) {
       }
     },
     fetch: async url => url.endsWith('/job-suggestions')
-      ? {
+      ? suggestionFetch
+        ? suggestionFetch(url)
+        : {
           ok: false,
           status: 502,
           text: async () => 'Gemini API error (503): This model is currently experiencing high demand.'
@@ -227,4 +229,55 @@ test('suggestion errors show the sanitized Gemini reason', async () => {
     'Suggestions failed: Gemini API error (503): This model is currently experiencing high demand. Your skills and job requirements are still here.'
   );
   assert.equal(elements['suggest-button'].disabled, false);
+});
+
+test('a 429 retry clears suggestions from the previous successful request', async () => {
+  let requestCount = 0;
+  const { elements, clickSuggest } = await loadApp({}, async () => {
+    requestCount += 1;
+    if (requestCount === 1) {
+      return {
+        ok: true,
+        json: async () => ({ suggestions: [{ role: 'Data Analyst', explanation: 'A fit.' }] })
+      };
+    }
+    return {
+      ok: false,
+      status: 429,
+      text: async () => 'Gemini API error (429): You exceeded your current quota.'
+    };
+  });
+
+  elements['skills-input'].value = 'SQL';
+  await clickSuggest();
+  assert.equal(elements['suggestions-list'].children.length, 1);
+  assert.equal(elements['suggestions-list'].hidden, false);
+
+  await clickSuggest();
+  assert.equal(elements['suggestions-list'].children.length, 0);
+  assert.equal(elements['suggestions-list'].hidden, true);
+  assert.match(elements['suggest-status'].textContent, /429/);
+});
+
+test('a network failure clears suggestions from the previous successful request', async () => {
+  let requestCount = 0;
+  const { elements, clickSuggest } = await loadApp({}, async () => {
+    requestCount += 1;
+    if (requestCount === 1) {
+      return {
+        ok: true,
+        json: async () => ({ suggestions: [{ role: 'Data Analyst', explanation: 'A fit.' }] })
+      };
+    }
+    throw new Error('network down');
+  });
+
+  elements['skills-input'].value = 'SQL';
+  await clickSuggest();
+  assert.equal(elements['suggestions-list'].children.length, 1);
+
+  await clickSuggest();
+  assert.equal(elements['suggestions-list'].children.length, 0);
+  assert.equal(elements['suggestions-list'].hidden, true);
+  assert.match(elements['suggest-status'].textContent, /Could not reach the server/);
 });

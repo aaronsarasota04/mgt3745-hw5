@@ -315,6 +315,8 @@
   // Validate the skillset, call the Worker, and display suggestions or an error without clearing entered values.
   async function showSuggestions() {
     const userSkills = userSkillsInput.value.trim();
+    suggestionsList.replaceChildren();
+    suggestionsList.hidden = true;
 
     if (!userSkills) {
       suggestStatus.className = 'status-text validation-message';
