@@ -18,7 +18,6 @@ const CORS = {
   "access-control-allow-headers": "content-type",
 };
 
-      console.error("Gemini API fetch failed before receiving a response");
 export default {
   async fetch(request, env) {
     // Anything that throws below becomes a readable 500 instead of a bare
@@ -69,8 +68,15 @@ async function handle(request, env) {
     if (userSkills.length > 2000 || jobText.length > 2000) {
       return new Response("skill input is too long", { status: 400, headers: CORS });
     }
+    const entryText = JSON.stringify({ userSkills, jobText });
+    const storeApiOutput = apiOutput => env.DB.prepare(
+      `INSERT INTO entries (text, "API Output") VALUES (?, ?)`)
+      .bind(entryText, apiOutput).run();
+
     if (!env.GEMINI_API) {
-      return new Response("job suggestions are not configured", { status: 503, headers: CORS });
+      const apiOutput = "job suggestions are not configured";
+      await storeApiOutput(apiOutput);
+      return new Response(apiOutput, { status: 503, headers: CORS });
     }
 
     let geminiResponse;
@@ -116,7 +122,9 @@ async function handle(request, env) {
           }),
         });
     } catch {
-      return new Response("job suggestions are temporarily unavailable", { status: 502, headers: CORS });
+      const apiOutput = "Gemini API request failed before receiving a response";
+      await storeApiOutput(apiOutput);
+      return new Response(apiOutput, { status: 502, headers: CORS });
     }
 
     if (!geminiResponse.ok) {
@@ -136,17 +144,22 @@ async function handle(request, env) {
         // Keep the upstream status useful even when its error body is not JSON.
       }
       console.error("Gemini API request failed", { status: geminiResponse.status, detail: errorDetail });
-      return new Response(`Gemini API error (${geminiResponse.status}): ${errorDetail}`, { status: 502, headers: CORS });
+      const apiOutput = `Gemini API error (${geminiResponse.status}): ${errorDetail}`;
+      await storeApiOutput(apiOutput);
+      return new Response(apiOutput, { status: 502, headers: CORS });
     }
 
     let suggestions;
+    let generatedText;
     try {
       const responseBody = await geminiResponse.json();
-      const generatedText = responseBody.candidates?.[0]?.content?.parts?.[0]?.text;
+      generatedText = responseBody.candidates?.[0]?.content?.parts?.[0]?.text;
       suggestions = JSON.parse(generatedText).suggestions;
     } catch {
       console.error("Gemini response JSON could not be parsed");
-      return new Response("Gemini returned unusable suggestions", { status: 502, headers: CORS });
+      const apiOutput = "Gemini returned unusable suggestions";
+      await storeApiOutput(apiOutput);
+      return new Response(apiOutput, { status: 502, headers: CORS });
     }
 
     const validSuggestions = Array.isArray(suggestions) && suggestions.length > 0
@@ -156,11 +169,12 @@ async function handle(request, env) {
         && item.relevantSkillsToBuild.every(skill => typeof skill === "string"));
     if (!validSuggestions) {
       console.error("Gemini suggestions did not match the expected structure");
-      return new Response("Gemini returned unusable suggestions", { status: 502, headers: CORS });
+      const apiOutput = "Gemini returned unusable suggestions";
+      await storeApiOutput(apiOutput);
+      return new Response(apiOutput, { status: 502, headers: CORS });
     }
 
-    await env.DB.prepare("INSERT INTO entries (text) VALUES (?)")
-      .bind(JSON.stringify({ userSkills, jobText })).run();
+    await storeApiOutput(generatedText);
     return Response.json({ suggestions }, { headers: CORS });
   }
 
