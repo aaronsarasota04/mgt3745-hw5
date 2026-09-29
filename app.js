@@ -3,7 +3,10 @@
 
   // Keep saved drafts scoped to this feature and avoid accidental global variables.
   const storageKey = 'mgt3745.job-fit.v1';
-  const API = 'https://mgt3745-hw4.arahim.workers.dev';
+  // Use the local Worker during local development and the deployed Worker in production.
+  const API = window.location.hostname === 'localhost'
+    ? 'http://localhost:8787'
+    : 'https://mgt3745-hw4.arahim.workers.dev';
   const userSkillsInput = document.querySelector('#skills-input');
   const jobInput = document.querySelector('#job-input');
   const evaluateButton = document.querySelector('#evaluate-button');
