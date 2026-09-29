@@ -12,6 +12,7 @@
 | 4 | Show matched and missing skills separately | Performance (inferred) | PROFILE-01 and PROFILE-02 | INT-01: Saturday, September 5, 2026; INT-02: Friday, September 25, 2026 | INT-01 reported projects and experience as evidence; INT-02 reported internship performance as evidence. Breaking evidence into matched and missing skills is an inferred way to make that comparison inspectable. |
 | 5 | Summarize fit based on the match result | Attractive (inferred) | PROFILE-01, especially applicants without internships | INT-01: Saturday, September 5, 2026 | INT-01 reported receiving an offer at a different level than the role initially targeted. This supports exploring decision guidance, but does not show that a threshold summary would have changed his decision. |
 | 6 | Save and restore submitted entries through the Worker and D1 | Unclassified (not assessed) | PROFILE-01 and PROFILE-02 | INT-01: Saturday, September 5, 2026; INT-02: Friday, September 25, 2026 | Neither INT-01 nor INT-02 discussed saving or restoring tool input. There is no interview evidence to assign a Kano class to persistence. |
+| 7 | Suggest similar job roles using the user's skillset and a Gemini API response | Unclassified (not assessed) | PROFILE-01 and PROFILE-02 | No interview evidence | This is a proposed discovery feature; neither interview assessed AI-generated job-role suggestions. |
 
 Interview dates are supplied for context; the table records whether each interview provided direct evidence for a feature. Kano classifications remain provisional because no feature-by-feature Kano questions were asked.
 
@@ -33,6 +34,7 @@ This feature is designed for two early-career technical applicant segments: appl
 
 **This does:**
 - Help the user decide whether a role is worth pursuing when the requirements are only a partial match.
+- Suggest similar job roles based on the user's entered skills using a Gemini API-backed response.
 - Find opportunities beyond major job boards, including company pages, alumni, and recruiter channels.
 - Support decisions using projects, relevant experience, and network signals instead of rigid checklist thinking.
 
@@ -46,6 +48,7 @@ This feature is designed for two early-career technical applicant segments: appl
 ## 4. Behavior
 
 - The user compares a role’s requirements against their background, including coursework, projects, relevant experience, and job-specific skills.
+- The user can request similar job-role suggestions based on the skills they entered; the system sends that skillset to the Gemini API through the server and displays the returned suggestions.
 - If a role is not an exact match, the user can still assess whether it is worth pursuing when the core responsibilities, toolset, and growth potential are aligned.
 - The user searches across multiple channels, not just major job boards, including company career pages, alumni networks, recruiter outreach, and other less visible sources.
 
@@ -56,6 +59,8 @@ This feature is designed for two early-career technical applicant segments: appl
 - The feature is for a student in the final semester before graduation, when application timing and volume matter.
 - It should rely only on user-provided or public information, such as resume details, projects, and job descriptions.
 - It should not require private employer data or internal hiring records.
+- The Gemini API credential must remain server-side and must not be exposed to the browser.
+- Generated role suggestions are ideas for further research, not verified current openings or employment predictions.
 - It must support multiple job-search channels rather than depending on one platform.
 
 ---
@@ -71,6 +76,11 @@ This feature is designed for two early-career technical applicant segments: appl
 - THE SYSTEM SHALL ignore blank entries and duplicate values after normalization so that match calculations are repeatable and objectively testable.
 - IF the user reloads the page after comparing two lists, THEN THE SYSTEM SHALL restore both entered lists from saved browser state.
 - IF a submitted entry exceeds 2,000 characters, THEN THE SYSTEM SHALL reject it with a 400 response and identify that the entry is too long.
+- WHEN the user requests similar jobs with a non-empty skillset, THE SYSTEM SHALL send the skillset to the Gemini API through the server and display suggested job roles with a short explanation of their relationship to the skillset and relevant skills to build.
+- WHEN the Worker receives a valid `POST /job-suggestions` request, THE SYSTEM SHALL return structured job suggestions and SHALL save the submitted skillset using a parameterized D1 statement.
+- IF the skillset is empty, THEN THE SYSTEM SHALL display a validation message and SHALL NOT send a Gemini API request.
+- IF the Gemini API is unavailable, rejects the request, or returns unusable suggestions, THEN THE SYSTEM SHALL explain that suggestions could not be generated and preserve the user's entered skills and job requirements.
+- THE SYSTEM SHALL keep the Gemini API credential out of browser-visible code and responses.
 
 ---
 
@@ -90,6 +100,8 @@ This feature is designed for two early-career technical applicant segments: appl
 | EARS 6: separate matched/missing lists | Enter user list `Python, SQL` and job list `Python, SQL, ETL`, then click Compare fit. | Matched and missing lists are both shown. | Matched list retained `Python` and `SQL`; missing list retained `ETL`. | PASS | Verified by `node --test app.test.js` with EARS 6 test. |
 | EARS 7: normalization and deduplication | Enter `Python, , SQL, Python` and `Python, SQL, SQL`, then click Compare fit. | Blank items and duplicates are ignored, and score is 100%. | Score displayed as 100% and missing list stayed empty. | PASS | Verified by `node --test app.test.js` with EARS 7 test. |
 | EARS 8: saved lists survive reload | Enter user list `Python, Java, Go, Rust` and job list `Python, Go, Databricks`, compare, then reload the page. | The percentage is generated and both entered lists remain available after reload. | Score displayed as 67%, and both lists were restored after reload; behavior was also manually checked. | PASS | Verified by `node --test app.test.js` with EARS 8 test and manual check. |
+| EARS 9: suggest roles from a skillset | Enter a non-empty skillset and request similar jobs. | The system sends the skillset to Gemini through the server and displays job-role suggestions with explanations and relevant skills to build; the API key is not exposed to the browser. | The Gemini-backed recommendation feature has not been implemented or tested. | CANNOT TEST YET | Implement the server-side Gemini request and recommendation display, then verify a successful response and confirm the credential is not present in browser code or responses. |
+| EARS 10: handle invalid input or Gemini failure | Submit an empty skillset, then simulate an unavailable API or unusable response while skills and job requirements are entered. | Empty input is rejected without an API request; API failures are explained and both entered lists remain unchanged. | The Gemini-backed recommendation feature has not been implemented or tested. | CANNOT TEST YET | Implement validation and failure handling, then test empty input and controlled Gemini API failure responses. |
 | Survive cleared cache and server persistence | Save a valid entry, clear the browser cache and localStorage for the app, reload the page, and verify the entry still appears from the deployed Worker/D1 state. | The record remains available across cache clears because storage is on the server, not only in the browser. | The saved record still appeared after reload, confirming persistence across a cleared browser cache. | PASS | Manual check against the deployed page; this is the HW3 CANNOT TEST YET that became testable and was tested. |
 | Failure: browser storage is unavailable | Block localStorage reads and writes, load the page, enter both lists, and submit a valid comparison. | The page reports the storage failure and keeps the user's entered values available. | Not tested in this verification. The failure path has not been exercised with blocked browser storage. | CANNOT TEST YET | A controlled localStorage read/write failure test is needed before marking this PASS. |
 | Failure: network is down | Block network access to the Worker or disconnect the client from the internet while the page loads or submits. | The user sees a clear network error and the page does not silently succeed. | No outage was intentionally simulated during verification, so the live app did not expose a blackout path we could trust in this environment. | CANNOT TEST YET | No reliable way to force a controlled outage of the deployed Cloudflare endpoint from this Codespace without interrupting unrelated work. |
