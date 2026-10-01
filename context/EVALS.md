@@ -13,7 +13,7 @@ The riskiest assumption in delegating the job matching tool is that if it fails 
 - **Tight:** At least 3 out of 4 EARS rows related to the new feature (GEMINI API job suggestions) will pass on the tool's first output
   - Resolved <date>: _ of _.
 - **Loose:** bolt will follow STYLE.md tokens better than AI Studio.
-  - Resolved <date>: ...
+  - Resolved 2026-10-01: Not supported against commit `e3f44e6d21f6a7d36a8938fe972a9ab4267a53a8`. Both stylesheets use the same relevant values, so there is no evidence Bolt followed the tokens more closely.
 - **Open:** The tool will introduce a dependency I did not ask for. Resolves when I read package.json.
   - Resolved <date>: ...
 
