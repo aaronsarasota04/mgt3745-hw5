@@ -2,7 +2,7 @@
 
 ## What
 
-Job Match Checker helps a graduating CS student decide whether a technical role is worth pursuing while employer tool requirements keep changing. It compares user-entered skills with job requirements by normalized skill names, calculates a match percentage, lists skill gaps, and can request related roles from Gemini; see [PROJECT.md](context/PROJECT.md) and [FEATURES.md](context/FEATURES.md). Draft inputs stay in browser `localStorage`; evaluating a match sends the submitted lists through the Cloudflare Worker to D1, and role-suggestion requests and API results are also stored there, as described in [ADR-002](context/ARCHITECTURE.md#adr-002).
+Job Match Checker helps a graduating CS student decide which technical roles are worth pursuing by comparing skills with requirements and using the delegated Gemini feature to suggest related roles; see the [HW4 repository](https://github.com/aaronsarasota04/mgt3745-hw4), [PROJECT.md](context/PROJECT.md), and [FEATURES.md](context/FEATURES.md). Draft inputs stay in browser `localStorage`; evaluating a match sends the submitted lists through the Cloudflare Worker to D1, and role-suggestion requests and API results are also stored there, as described in [ADR-002](context/ARCHITECTURE.md#adr-002).
 
 ## See It Work
 
@@ -32,14 +32,13 @@ flowchart LR
 From a fresh Codespace:
 
 1. Run `npm install`.
-2. Run the Worker suite with `npm test`; it targets the deployed Worker URL configured in `evals/worker.test.js` by default.
-3. To target a different Worker, set `API` and run `npm test`:
+2. Run the Worker code eval against the deployed Worker:
 
    ```sh
-    API=https://your-worker.workers.dev npm test
+  API=https://mgt3745-hw4.arahim.workers.dev npm test
    ```
 
-Run the full browser and Worker suite with `npm run test:unit`. The default Worker suite writes test records to the shared D1 database and exercises Gemini's configured failure path, so run it when the deployed services are available. The current `npm test` run passes all nine Worker tests without skips.
+3. Run the full browser and Worker suite with `npm run test:unit`. The Worker tests write records to the shared D1 database and exercise the configured Gemini failure path; run them when the deployed services are available. The latest `npm test` run passed all 9 Worker tests, and `npm run test:unit` passed all 20 tests, with no skips.
 
 ![npm test passing](docs/npm-test.png)
 
@@ -50,10 +49,10 @@ To run the Worker locally instead: `npm run dev` (port 8787, local D1 emulator).
 | Area | Evidence | Status |
 |---|---|---|
 | Skill comparison, validation, result lists, and reload draft (EARS 1-8) | Eight named tests in `app.test.js` | PASS |
-| Worker input validation, structured suggestion response, parameterized D1 write, and credential redaction | Local unit tests in `evals/worker.test.js` with mocked Gemini and D1 | PASS (unit) |
+| Worker input validation, structured suggestion response, parameterized D1 write, and credential redaction | 9 Worker tests in `evals/worker.test.js`; 20 combined browser and Worker tests in `npm run test:unit` | PASS |
 | Cleared-cache persistence | Manual browser check recorded in [FEATURES.md verification](context/FEATURES.md#verification) | PASS |
-| Deployed Worker integration | Five `API`-backed checks are skipped in the local unit run | NOT RUN locally |
-| Worker 400 messaging | The UI currently maps every Worker 400 to a “text too long” message | KNOWN ISSUE; logged in [EVALS.md](context/EVALS.md) |
+| Deployed Worker integration | `API=https://mgt3745-hw4.arahim.workers.dev npm test`: 9 passed, 0 skipped | PASS |
+| Worker 400 messaging | The entries-save path labels every `/entries` 400 “text too long”; suggestions label every 400 as missing skills | KNOWN ISSUE; logged in [EVALS.md](context/EVALS.md) |
 | Concurrent writes from multiple clients | Concurrency behavior is not defined in [ADR-002](context/ARCHITECTURE.md#adr-002) | DEFERRED |
 
 Full acceptance criteria and verification evidence are in [FEATURES.md](context/FEATURES.md) and [EVALS.md](context/EVALS.md).
@@ -64,6 +63,12 @@ Repository: [mgt3745-hw5](https://github.com/aaronsarasota04/mgt3745-hw5). The W
 
 Reading order: [PROJECT.md](context/PROJECT.md) → [USERS.md](context/USERS.md) → [FEATURES.md](context/FEATURES.md) → [ARCHITECTURE.md](context/ARCHITECTURE.md) → [STANDARDS.md](context/STANDARDS.md) → [TOOLS.md](context/TOOLS.md) → [STYLE.md](context/STYLE.md) → [EVALS.md](context/EVALS.md) → [SKILLS.md](context/SKILLS.md) → [CLAUDE.md](context/CLAUDE.md).
 
+### Delegation
+
+- [DDR-001](docs/DDR-001.md): Bolt.new Gemini role-suggestion feature.
+- [DDR-002](docs/DDR-002.md): Copilot 2,000-character Worker validation.
+- [COMPARISON.md](docs/COMPARISON.md): AI Studio and Bolt role-suggestion comparison.
+
 ## AI Use
 
-Bolt.new Standard was delegated the Gemini role-suggestion feature; Copilot Agent reviewed the result and supported testing and documentation. [DDR-001](docs/DDR-001.md) records the delegation and estimates 5 hours for a hand-built version, 0.25 hours for the tool run, and 2 hours for review and fixes. [COMPARISON.md](docs/COMPARISON.md) records the AI Studio and Bolt implementation comparison.
+Bolt.new was used for the Gemini role-suggestion UI, and GitHub Copilot was used for the HW4 Worker validation change and review. [DDR-001](docs/DDR-001.md) and [DDR-002](docs/DDR-002.md) record both delegations; together, their estimates are 9 hours by hand versus 3 hours for tool runs and review, or 6 hours net saved. [COMPARISON.md](docs/COMPARISON.md) records the AI Studio and Bolt implementation comparison.

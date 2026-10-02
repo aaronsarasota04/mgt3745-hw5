@@ -45,10 +45,11 @@ The riskiest assumption in delegating the job matching tool is that if it fails 
 | EARS 10 could not produce suggestions when Gemini rate limit was exceeded (429) | 1 | Gemini API | Worker |
 | Client mislabels 400s by endpoint: entries as “text too long,” suggestions as missing skills | 1 | Copilot | app.js |
 | SQL was concatenated in worker.js instead of parameterized | 1 | Copilot from HW4 | app.js |
+| Judgment eval agreement was below the 80% threshold (60%) | 1 | Judgment eval | JUDGMENT |
 
 ## 5. Evals
-- **Code:** `npm test` with `API=<worker url>`; _ tests, _ passing. Screenshot in README.
-- **Judgment:** docs/JUDGMENT.md, _ questions, two graders, agreement _%.
+- **Code:** `API=https://mgt3745-hw4.arahim.workers.dev npm test`; 9 tests, 9 passed, 0 skipped. `npm run test:unit` runs the browser and Worker suites: 20 tests, 20 passed, 0 skipped. Screenshot in README.
+- **Judgment:** docs/JUDGMENT.md, 10 questions, two graders, agreement 6/10 (60%).
 
 ## Verification table (carried from HW4)
 <!-- Paste your HW4 verification table here; it is the ancestor of section 3. -->
