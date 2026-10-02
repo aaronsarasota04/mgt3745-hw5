@@ -14,6 +14,9 @@ errors; never throw to the console.
 ## Delegation guidance: what to paste, what to check first
 **Paste, in order:** PROJECT, FEATURES (rows marked), STYLE, STANDARDS, TOOLS, then the current page files. One instruction line naming the files it may touch.
 **Check first:** the diff's file list, then innerHTML / concatenated SQL, then whether it used the tokens.
-**Reliably wrong (this week):** *fill from your error-analysis log*
+**Reliably wrong (this week):** Copilot: three colors including unapproved gray (8), non-token/lighter text colors (8), concatenated SQL (1), and incorrect Worker 400 messaging (1); Bolt and AI Studio: button blue not `color-primary` (2).
 
-## <your entry>
+## Testing guidance: How to write unit/ integration tests for any new code added.
+**When**: Any testing required for new EARS statements or any additional code added to the project
+**Do**: All Javascript code will have a 100% of lines covered. If any lines are missing coverage, add tests for them. Each test will note the appropriate EARS statement and/or number of lines covered by that test
+**Because**: Building on untested code can run into issues 
