@@ -32,14 +32,13 @@ flowchart LR
 From a fresh Codespace:
 
 1. Run `npm install`.
-2. Run the local browser and Worker tests with `npm run test:unit`. With `API` unset, these tests do not contact the deployed Worker.
-3. To opt into deployed Worker integration tests, set `API` and run `npm test`:
+2. Run the Worker code eval against the deployed Worker:
 
    ```sh
-    API=https://mgt3745-hw4.arahim.workers.dev npm test
+  API=https://mgt3745-hw4.arahim.workers.dev npm test
    ```
 
-With `API` unset, `npm run test:unit` reports 15 passing tests and skips five deployed-API checks. The 429 log line in the credential-redaction unit test is mocked. When `API` is set, the integration checks contact the deployed Worker, write test records to shared D1, and may make a Gemini request; run them only when you intend to use those services. The last explicit deployed run passed all 9 Worker tests.
+3. Run the full browser and Worker suite with `npm run test:unit`. The Worker tests write records to the shared D1 database and exercise the configured Gemini failure path; run them when the deployed services are available. The latest `npm test` run passed all 9 Worker tests, and `npm run test:unit` passed all 20 tests, with no skips.
 
 ![npm test passing](docs/npm-test.png)
 
@@ -50,9 +49,9 @@ To run the Worker locally instead: `npm run dev` (port 8787, local D1 emulator).
 | Area | Evidence | Status |
 |---|---|---|
 | Skill comparison, validation, result lists, and reload draft (EARS 1-8) | Eight named tests in `app.test.js` | PASS |
-| Worker input validation, structured suggestion response, parameterized D1 write, and credential redaction | Local unit tests in `evals/worker.test.js`; combined local run has 15 passes and 5 API checks skipped | PASS (unit) |
+| Worker input validation, structured suggestion response, parameterized D1 write, and credential redaction | 9 Worker tests in `evals/worker.test.js`; 20 combined browser and Worker tests in `npm run test:unit` | PASS |
 | Cleared-cache persistence | Manual browser check recorded in [FEATURES.md verification](context/FEATURES.md#verification) | PASS |
-| Deployed Worker integration | Explicit `API=https://mgt3745-hw4.arahim.workers.dev npm test`: last run 9 passed, 0 skipped | PASS (opt-in) |
+| Deployed Worker integration | `API=https://mgt3745-hw4.arahim.workers.dev npm test`: 9 passed, 0 skipped | PASS |
 | Worker 400 messaging | The entries-save path labels every `/entries` 400 “text too long”; suggestions label every 400 as missing skills | KNOWN ISSUE; logged in [EVALS.md](context/EVALS.md) |
 | Concurrent writes from multiple clients | Concurrency behavior is not defined in [ADR-002](context/ARCHITECTURE.md#adr-002) | DEFERRED |
 
