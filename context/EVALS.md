@@ -43,7 +43,7 @@ The riskiest assumption in delegating the job matching tool is that if it fails 
 | Every text color misses STYLE.md tokens; two blues are lighter than color-primary | 8 | Copilot | STYLE |
 | Buttons used its own blue, not color-primary | 2 | bolt, AI Studio | STYLE |
 | EARS 10 could not produce suggestions when Gemini rate limit was exceeded (429) | 1 | Gemini API | Worker |
-| Worker 400 is always shown as "text too long" although it can mean other validation errors | 1 | Copilot | app.js |
+| Client mislabels 400s by endpoint: entries as “text too long,” suggestions as missing skills | 1 | Copilot | app.js |
 | SQL was concatenated in worker.js instead of parameterized | 1 | Copilot from HW4 | app.js |
 
 ## 5. Evals
