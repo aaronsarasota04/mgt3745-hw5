@@ -36,7 +36,7 @@ From a fresh Codespace:
 3. To opt into deployed Worker integration tests, set `API` and run `npm test`:
 
    ```sh
-  API=https://mgt3745-hw4.arahim.workers.dev npm test
+    API=https://mgt3745-hw4.arahim.workers.dev npm test
    ```
 
 With `API` unset, `npm run test:unit` reports 15 passing tests and skips five deployed-API checks. The 429 log line in the credential-redaction unit test is mocked. When `API` is set, the integration checks contact the deployed Worker, write test records to shared D1, and may make a Gemini request; run them only when you intend to use those services. The last explicit deployed run passed all 9 Worker tests.
