@@ -8,7 +8,7 @@ The first two are written and committed BEFORE any tool sees the spec.
      and what would show it is false. -->
 The riskiest assumption in delegating the job matching tool is that if it fails to calculate a percentage match between user and job skills, it makes the delegation pointless. If the compare fit button is missing, or if pressed does not show either a percentage fit or a error message, it shows as false.
 
-## 2. Prediction Stake (before build, <date and time>)
+## 2. Prediction Stake (before build, September 28, 2026 10:51PM ET)
 <!-- At least one of each. Never edit the prediction text; add resolutions below it. -->
 - **Tight:** At least 3 out of 4 EARS rows related to the new feature (GEMINI API job suggestions) will pass on the tool's first output
   - Resolved 2026-10-01: Not supported. The first output needed edits to wire the feature into the existing UI, so it did not pass on first output.
