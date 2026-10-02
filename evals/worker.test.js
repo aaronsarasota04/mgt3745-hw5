@@ -1,13 +1,13 @@
 // evals/worker.test.js
-// The code eval. Run with:   API=https://mgt3745-hw4.<you>.workers.dev npm test
+// Uses the deployed Worker by default; set API to target a different Worker.
 // Each test names the EARS row it checks. Add at least one for your new feature.
 import { test } from "node:test";
 import assert from "node:assert/strict";
 import { readFile } from "node:fs/promises";
 import worker from "../worker.js";
 
-const API = process.env.API;
-const integrationTest = API ? test : test.skip;
+const API = process.env.API || "https://mgt3745-hw4.arahim.workers.dev";
+const integrationTest = test;
 
 integrationTest("EARS: THE SYSTEM SHALL return all entries in creation order (GET /entries is 200 + array)", async () => {
   const res = await fetch(API + "/entries");
