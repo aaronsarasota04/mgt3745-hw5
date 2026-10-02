@@ -67,8 +67,17 @@ Reading order: [PROJECT.md](context/PROJECT.md) → [USERS.md](context/USERS.md)
 
 - [DDR-001](docs/DDR-001.md): Bolt.new Gemini role-suggestion feature.
 - [DDR-002](docs/DDR-002.md): Copilot 2,000-character Worker validation.
+- [DDR-002b](docs/DDR-002b.md): Copilot STYLE.md and comparison-note work.
 - [COMPARISON.md](docs/COMPARISON.md): AI Studio and Bolt role-suggestion comparison.
 
 ## AI Use
 
-Bolt.new was used for the Gemini role-suggestion UI, and GitHub Copilot was used for the HW4 Worker validation change and review. [DDR-001](docs/DDR-001.md) and [DDR-002](docs/DDR-002.md) record both delegations; together, their estimates are 9 hours by hand versus 3 hours for tool runs and review, or 6 hours net saved. [COMPARISON.md](docs/COMPARISON.md) records the AI Studio and Bolt implementation comparison.
+Every delegation has a DDR under Delegation above. Hours spent on this assignment: 8
+
+Retired text: 
+
+**Tool and task delegated:** I used AI to debug `worker.js` and confirm that the HTTP 400 path worked as intended, update `TOOLS.md` with the tools used, bring the HW3 files into the HW4 project, update the HW3 `app.test.js` unit tests used for verification so they worked with the Worker-backed app, and proofread my drafts in the other Markdown files to polish the writing."How to Run the Worker Locally" section was generated with AI assistance, but then verified and corrected by me before submission.
+
+**Why:** I delegated these tasks to save time, reduce the risk of errors while moving files manually, and avoid additional debugging problems because I am still becoming familiar with front-end development.
+
+**How it was checked:** I ran the updated `app.test.js` unit tests used for HW3 verification and confirmed that all eight comparison and persistence tests passed with the HW4 fetch-backed app. For the Worker, Copilot wrote the `fieldTooLong` variable. It first parses `body.text` as JSON and then checks whether the `userSkills` or `jobText` fields are longer than 2,000 characters; if parsing fails, it falls back to checking the raw text length. I could not fully verify every possible JSON shape or malformed payload branch, so I reviewed that logic and asked Copilot to test an entry over 2,000 characters. I then manually pasted a 2,000-character entry into the website and confirmed that the deployed Worker returned HTTP 400 and the page displayed the expected validation message. I also checked that the transferred HW3 files and polished Markdown still reflected my original work and requirements. For running the worker locally, I manually did the steps it gave me to verify output.
