@@ -35,7 +35,7 @@ From a fresh Codespace:
 2. Run the Worker code eval against the deployed Worker:
 
    ```sh
-  API=https://mgt3745-hw4.arahim.workers.dev npm test
+    API=https://mgt3745-hw4.arahim.workers.dev npm test
    ```
 
 3. Run the full browser and Worker suite with `npm run test:unit`. The Worker tests write records to the shared D1 database and exercise the configured Gemini failure path; run them when the deployed services are available. The latest `npm test` run passed all 9 Worker tests, and `npm run test:unit` passed all 20 tests, with no skips.
