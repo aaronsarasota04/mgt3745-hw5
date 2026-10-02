@@ -1,23 +1,24 @@
 :root {
-  --paper: #f5fbff;
-  --surface: #ffffff;
-  --ink: #18221f;
-  --muted: #536373;
-  --line: #dbeaf6;
-  --teal: #87ceeb;
-  --teal-dark: #4aa3d8;
-  --coral: #ffd700;
+  --color-primary: #1F3A5F;
+  --color-accent: #FFD700;
+  --color-background: #FFFFFF;
+  --color-text: #1A1A1A;
+  --font-body: Arial, sans-serif;
+  --font-heading: "Times New Roman", serif;
+  --font-size-min: 12px;
+  --space-unit: 8px;
+  --radius: 4px;
 }
 
-/* Use a stable box model and a warm, readable base surface for the whole app. */
+/* Use a stable box model and the shared design tokens throughout the app. */
 * { box-sizing: border-box; }
 
 /* Set the global type, canvas, and default text color for the application. */
 body {
   margin: 0;
-  font-family: "Trebuchet MS", Verdana, sans-serif;
-  background: var(--paper);
-  color: var(--ink);
+  font-family: var(--font-body);
+  background: var(--color-background);
+  color: var(--color-text);
 }
 
 /* Constrain the reading width while leaving enough space for the two input panels. */
@@ -33,23 +34,23 @@ body {
   justify-content: space-between;
   gap: 3rem;
   padding: 1rem 0 4.5rem;
-  border-bottom: 1px solid var(--ink);
+  border-bottom: 1px solid var(--color-primary);
 }
 
 .eyebrow {
   margin: 0 0 1.25rem;
   text-transform: uppercase;
   letter-spacing: 0.16em;
-  font-size: 0.7rem;
+  font-size: var(--font-size-min);
   font-weight: 700;
-  color: var(--teal);
+  color: var(--color-primary);
 }
 
 /* Establish the shared heading rhythm and serif display voice. */
 h1, h2, h3, p { margin-top: 0; }
 
 h1, h2, h3 {
-  font-family: Georgia, "Times New Roman", serif;
+  font-family: var(--font-heading);
   margin-top: 0;
 }
 
@@ -62,7 +63,10 @@ h1 {
   font-weight: 400;
 }
 
-h1 em { color: var(--coral); font-style: italic; }
+h1 em {
+  color: var(--color-text);
+  font-style: italic;
+}
 
 h2 {
   margin-bottom: 0.6rem;
@@ -81,7 +85,7 @@ h3 {
 .hero-intro {
   max-width: 34rem;
   margin-bottom: 0;
-  color: var(--muted);
+  color: var(--color-primary);
   font-size: 1.05rem;
   line-height: 1.5;
 }
@@ -91,19 +95,21 @@ h3 {
   align-self: flex-end;
   min-width: 12rem;
   padding: 1.25rem 0 0.2rem 1.25rem;
-  border-left: 1px solid var(--coral);
+  border-left: 4px solid var(--color-accent);
 }
 
 .note-number, .step-number {
-  color: var(--coral);
-  font-size: 0.75rem;
+  padding: 0.15rem 0.35rem;
+  background: var(--color-accent);
+  color: var(--color-primary);
+  font-size: var(--font-size-min);
   font-weight: 700;
   letter-spacing: 0.1em;
 }
 
 .hero-note p {
   margin: 0.7rem 0 0;
-  font-family: Georgia, "Times New Roman", serif;
+  font-family: var(--font-heading);
   font-size: 1.15rem;
   line-height: 1.15;
 }
@@ -121,8 +127,8 @@ h3 {
 
 .section-kicker {
   margin-bottom: 0.7rem;
-  color: var(--teal);
-  font-size: 0.7rem;
+  color: var(--color-primary);
+  font-size: var(--font-size-min);
   font-weight: 700;
   letter-spacing: 0.16em;
   text-transform: uppercase;
@@ -133,7 +139,7 @@ h3 {
 
 /* Give supporting instructions a smaller, lower-contrast treatment. */
 .instruction, .field-hint, .action-note, .results-footnote {
-  color: var(--muted);
+  color: var(--color-primary);
   font-size: 0.82rem;
   line-height: 1.45;
 }
@@ -144,17 +150,18 @@ h3 {
 .input-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 1rem;
+  gap: var(--space-unit);
 }
 
 .input-panel {
   padding: 1.5rem;
-  background: var(--surface);
-  border: 1px solid var(--line);
+  background: var(--color-background);
+  border: 1px solid var(--color-primary);
+  border-radius: var(--radius);
 }
 
 /* Signal which panel contains the role that will be evaluated. */
-.featured-input { border-top: 4px solid var(--teal); }
+.featured-input { border-top: 4px solid var(--color-accent); }
 
 /* Keep each field's numbered title aligned with its content. */
 .field-heading {
@@ -168,8 +175,8 @@ h3 {
 label {
   display: block;
   margin-bottom: 0.6rem;
-  color: var(--muted);
-  font-size: 0.75rem;
+  color: var(--color-primary);
+  font-size: var(--font-size-min);
   font-weight: 700;
   letter-spacing: 0.04em;
   text-transform: uppercase;
@@ -182,10 +189,10 @@ input {
   font: inherit;
   font-size: 1.05rem;
   padding: 1rem;
-  border: 1px solid #aeb6ac;
-  border-radius: 0;
-  background: #fff;
-  color: var(--ink);
+  border: 1px solid var(--color-primary);
+  border-radius: var(--radius);
+  background: var(--color-background);
+  color: var(--color-text);
 }
 
 textarea {
@@ -216,22 +223,23 @@ button {
   min-height: 3.25rem;
   padding: 0.8rem 1.1rem 0.8rem 1.3rem;
   border: none;
-  border-radius: 0;
-  background: var(--teal);
-  color: #fff;
+  border-radius: var(--radius);
+  background: var(--color-primary);
+  color: var(--color-background);
   font: inherit;
   font-weight: 700;
   cursor: pointer;
 }
 
 button:hover {
-  background: var(--teal-dark);
+  background: var(--color-accent);
+  color: var(--color-primary);
 }
 
 button:focus-visible,
 input:focus-visible,
 textarea:focus-visible {
-  outline: 3px solid rgba(223, 107, 79, 0.45);
+  outline: 3px solid var(--color-primary);
   outline-offset: 2px;
 }
 
@@ -239,13 +247,16 @@ textarea:focus-visible {
 .status-text {
   min-height: 1.25rem;
   margin: 0.5rem 0 0;
-  color: var(--muted);
+  color: var(--color-primary);
   font-size: 0.82rem;
 }
 
 /* Give blocking input errors enough contrast and size to be noticed before retrying. */
 .status-text.validation-message {
-  color: var(--coral);
+  padding: var(--space-unit);
+  border-radius: var(--radius);
+  background: var(--color-accent);
+  color: var(--color-primary);
   font-size: 1rem;
   font-weight: 700;
 }
@@ -254,9 +265,10 @@ textarea:focus-visible {
 .results {
   margin-top: 3.5rem;
   padding: 2.5rem;
-  background: var(--teal);
-  color: #f4f1ea;
-  border-top: 1rem solid var(--coral);
+  background: var(--color-primary);
+  color: var(--color-background);
+  border-top: 1rem solid var(--color-accent);
+  border-radius: var(--radius);
 }
 
 .results-header {
@@ -265,11 +277,11 @@ textarea:focus-visible {
   align-items: end;
   gap: 2.5rem;
   padding-bottom: 2.5rem;
-  border-bottom: 1px solid rgba(244, 241, 234, 0.35);
+  border-bottom: 1px solid var(--color-background);
 }
 
 /* Style the result labels as context for the larger score and role name. */
-.results .section-kicker { color: #a8d8cd; }
+.results .section-kicker { color: var(--color-background); }
 .results h2 { margin-bottom: 0; }
 
 .result-label {
@@ -277,7 +289,7 @@ textarea:focus-visible {
   font-size: 0.8rem;
   letter-spacing: 0.04em;
   text-transform: uppercase;
-  color: #a8d8cd;
+  color: var(--color-background);
 }
 
 .result-value {
@@ -288,18 +300,18 @@ textarea:focus-visible {
 
 .score {
   margin: 0;
-  font-family: Georgia, "Times New Roman", serif;
+  font-family: var(--font-heading);
   font-size: clamp(4.5rem, 12vw, 8.5rem);
   line-height: 0.9;
   font-weight: 700;
   letter-spacing: -0.05em;
-  color: #fffdf8;
+  color: var(--color-background);
 }
 
 .summary {
   max-width: 35rem;
   margin: 1rem 0 0;
-  color: #d9eee7;
+  color: var(--color-background);
   font-size: 1.05rem;
   line-height: 1.45;
 }
@@ -312,28 +324,29 @@ textarea:focus-visible {
   grid-template-columns: repeat(2, 1fr);
   gap: 1px;
   margin-top: 1.5rem;
-  background: rgba(244, 241, 234, 0.35);
+  background: var(--color-background);
 }
 
-.skill-column { padding: 1.25rem 1.5rem; background: var(--teal); }
-.skill-column h3 { color: #fffdf8; }
-.missing-column h3 { color: #f4c2b5; }
+.skill-column { padding: 1.25rem 1.5rem; background: var(--color-primary); }
+.skill-column h3 { color: var(--color-background); }
+.missing-column h3 { color: var(--color-background); }
 
 .list {
   margin: 0.5rem 0 0;
   padding-left: 1.25rem;
   line-height: 1.7;
-  color: #d9eee7;
+  color: var(--color-background);
 }
 
-.results-footnote { margin: 2rem 0 0; color: #a8d8cd; }
+.results-footnote { margin: 2rem 0 0; color: var(--color-background); }
 
 /* Style the job-suggestion discovery section as a quiet complement to the main result. */
 .suggestions {
   margin-top: 3.5rem;
   padding: 2.5rem;
-  background: var(--surface);
-  border: 1px solid var(--line);
+  background: var(--color-background);
+  border: 1px solid var(--color-primary);
+  border-radius: var(--radius);
 }
 
 .suggestions .section-heading {
@@ -344,35 +357,36 @@ textarea:focus-visible {
 .suggestion-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 1rem;
+  gap: var(--space-unit);
   margin-top: 1.5rem;
 }
 
 /* Give each suggested role its own panel with clear hierarchy. */
 .suggestion-card {
   padding: 1.5rem;
-  background: var(--paper);
-  border: 1px solid var(--line);
-  border-top: 4px solid var(--teal);
+  background: var(--color-background);
+  border: 1px solid var(--color-primary);
+  border-top: 4px solid var(--color-accent);
+  border-radius: var(--radius);
 }
 
 .suggestion-card h3 {
   margin-bottom: 0.75rem;
   font-size: 1.15rem;
-  color: var(--ink);
+  color: var(--color-text);
 }
 
 .suggestion-explanation {
   margin: 0 0 1rem;
-  color: var(--muted);
+  color: var(--color-primary);
   font-size: 0.9rem;
   line-height: 1.5;
 }
 
 .suggestion-skills-label {
   margin: 0 0 0.4rem;
-  color: var(--teal-dark);
-  font-size: 0.7rem;
+  color: var(--color-primary);
+  font-size: var(--font-size-min);
   font-weight: 700;
   letter-spacing: 0.1em;
   text-transform: uppercase;
@@ -382,8 +396,8 @@ textarea:focus-visible {
   margin: 0;
   padding-left: 1.1rem;
   line-height: 1.6;
-  color: var(--ink);
-  font-size: 0.85rem;
+  color: var(--color-text);
+  font-size: var(--font-size-min);
 }
 
 /* Collapse the suggestion grid to a single column on narrow screens. */
