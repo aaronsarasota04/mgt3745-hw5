@@ -52,6 +52,6 @@ Things this interface will not do, and the Law of UX behind each refusal.
 
 ## Sources
 
-- Copilot: assisted with the token audit and WCAG contrast calculations.
+**This was delegated by Copilot and manually checked later on**
 - Admired: *N/A; current tokens are retained for this assignment.*
 - Resented: *N/A; refusals describe this interface's own interaction rules.*
